@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PACE Framework — Operational Architecture Diagram</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #0d1117; color: #e6edf3; }
+
+  .header { background: linear-gradient(135deg, #1f4e79 0%, #2e75b6 100%); padding: 28px 40px; }
+  .header h1 { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+  .header p  { font-size: 13px; color: #a8c8f0; margin-top: 6px; }
+
+  .canvas { padding: 32px 40px; max-width: 1280px; margin: 0 auto; }
+
+  /* ── Threat Row ── */
+  .threat-row { display: flex; gap: 12px; margin-bottom: 24px; }
+  .threat-box { flex: 1; background: #1c1c2e; border: 1px solid #6e40aa; border-radius: 8px;
+                padding: 14px 16px; text-align: center; }
+  .threat-box .icon { font-size: 22px; margin-bottom: 6px; }
+  .threat-box .label { font-size: 11px; font-weight: 600; color: #bf7fff; text-transform: uppercase; letter-spacing: 0.8px; }
+  .threat-box .desc  { font-size: 11px; color: #8b8b9e; margin-top: 4px; }
+
+  /* ── Arrow ── */
+  .arrow-down { text-align: center; color: #555; font-size: 20px; margin: 4px 0; }
+  .arrow-label { text-align: center; font-size: 10px; color: #8b8b9e; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  /* ── Pillar Grid ── */
+  .pillars { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; margin: 8px 0; }
+
+  .pillar { border-radius: 10px; padding: 18px; position: relative; overflow: hidden; }
+  .pillar-P { background: linear-gradient(160deg, #0f2740 0%, #1a3a5e 100%); border: 1px solid #2e75b6; }
+  .pillar-A { background: linear-gradient(160deg, #0f2740 0%, #1e4d30 100%); border: 1px solid #2e7d32; }
+  .pillar-C { background: linear-gradient(160deg, #2d1a00 0%, #4a2e00 100%); border: 1px solid #e65100; }
+  .pillar-E { background: linear-gradient(160deg, #2d0d0d 0%, #4a1010 100%); border: 1px solid #c62828; }
+
+  .pillar-letter { font-size: 36px; font-weight: 900; opacity: 0.18; position: absolute; top: 8px; right: 14px; }
+  .pillar-P .pillar-letter { color: #2e75b6; }
+  .pillar-A .pillar-letter { color: #2e7d32; }
+  .pillar-C .pillar-letter { color: #e65100; }
+  .pillar-E .pillar-letter { color: #c62828; }
+
+  .pillar-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+  .pillar-P .pillar-name { color: #64b5f6; }
+  .pillar-A .pillar-name { color: #81c784; }
+  .pillar-C .pillar-name { color: #ffb74d; }
+  .pillar-E .pillar-name { color: #ef9a9a; }
+
+  .pillar-title { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+  .pillar-core  { font-size: 11px; color: #8b9dbe; margin-bottom: 10px; font-style: italic; }
+
+  .tier-badge { display: inline-block; font-size: 10px; border-radius: 4px; padding: 2px 7px; margin: 2px 2px 2px 0; font-weight: 600; }
+  .t1 { background: #1a3a5e; color: #64b5f6; border: 1px solid #2e75b6; }
+  .t2 { background: #1e3a2a; color: #81c784; border: 1px solid #2e7d32; }
+  .t3 { background: #3a1a1a; color: #ef9a9a; border: 1px solid #c62828; }
+
+  .eadm-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+  .eadm-badge { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+  .eg { background: #1a3a1a; color: #81c784; border: 1px solid #2e7d32; }
+  .ea { background: #3a3010; color: #ffcc02; border: 1px solid #f9a825; }
+  .er { background: #3a1010; color: #ef9a9a; border: 1px solid #c62828; }
+  .eb { background: #1a1a1a; color: #aaa; border: 1px solid #555; }
+
+  /* ── Data flows between pillars ── */
+  .flows { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .flow-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px 14px; }
+  .flow-card .fh { font-size: 11px; font-weight: 700; color: #8b9dbe; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+  .flow-card .fb { font-size: 12px; color: #c9d1d9; }
+  .flow-arrow { color: #2e75b6; }
+
+  /* ── CPT Vignette ── */
+  .vignette { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px 24px; margin: 20px 0; }
+  .vignette h3 { font-size: 13px; font-weight: 700; color: #8b9dbe; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; }
+  .steps { display: flex; gap: 0; }
+  .step { flex: 1; text-align: center; position: relative; }
+  .step:not(:last-child)::after { content: '→'; position: absolute; right: -8px; top: 18px; color: #444; font-size: 16px; }
+  .step-num  { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+               font-weight: 700; font-size: 13px; margin: 0 auto 8px; }
+  .sp { background: #1a3a5e; color: #64b5f6; border: 2px solid #2e75b6; }
+  .sa { background: #1e3a2a; color: #81c784; border: 2px solid #2e7d32; }
+  .sc { background: #3a2a00; color: #ffb74d; border: 2px solid #e65100; }
+  .se { background: #3a1010; color: #ef9a9a; border: 2px solid #c62828; }
+  .step-action { font-size: 11px; color: #c9d1d9; padding: 0 6px; }
+  .step-result { font-size: 10px; color: #666; margin-top: 4px; font-style: italic; padding: 0 6px; }
+
+  /* ── Decision/Legal Bar ── */
+  .legal-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+  .legal-card { background: #161b22; border-left: 3px solid #2e75b6; border-radius: 0 8px 8px 0; padding: 12px 14px; }
+  .legal-card.warn { border-left-color: #f9a825; }
+  .legal-card.crit { border-left-color: #c62828; }
+  .legal-card h4 { font-size: 11px; font-weight: 700; color: #8b9dbe; text-transform: uppercase; margin-bottom: 5px; }
+  .legal-card p  { font-size: 11px; color: #c9d1d9; line-height: 1.5; }
+
+  .footer-note { text-align: center; font-size: 11px; color: #444; margin-top: 24px; padding-bottom: 24px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>PACE Framework — Operational Architecture &amp; Workflow</h1>
+  <p>Proactive · AI-driven · Cyber-Physical · Escalation-aware Defense &nbsp;|&nbsp; Sunil Gentyala · sunil.gentyala@ieee.org · IEEE</p>
+</div>
+
+<div class="canvas">
+
+  <!-- THREAT ROW -->
+  <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;">Threat Environment (2026)</div>
+  <div class="threat-row">
+    <div class="threat-box">
+      <div class="icon">🤖</div>
+      <div class="label">AI-Assisted Attacks</div>
+      <div class="desc">Machine-speed lateral movement, automated vuln enumeration, AI-generated spear-phishing</div>
+    </div>
+    <div class="threat-box">
+      <div class="icon">🌫️</div>
+      <div class="label">Gray-Zone Operations</div>
+      <div class="desc">Below armed-attack threshold; pre-positioning for strategic effect without kinetic escalation</div>
+    </div>
+    <div class="threat-box">
+      <div class="icon">⚡</div>
+      <div class="label">CIKR Targeting</div>
+      <div class="desc">Civilian power, water, logistics, financial — held at risk to degrade military readiness</div>
+    </div>
+    <div class="threat-box">
+      <div class="icon">📡</div>
+      <div class="label">Escalation Ambiguity</div>
+      <div class="desc">No adversary signal-noise separation; miscalculation risk structurally elevated</div>
+    </div>
+  </div>
+
+  <div class="arrow-down">↓</div>
+  <div class="arrow-label">PACE Framework Response</div>
+
+  <!-- PILLARS -->
+  <div class="pillars">
+
+    <div class="pillar pillar-P">
+      <div class="pillar-letter">P</div>
+      <div class="pillar-name">Pillar I</div>
+      <div class="pillar-title">Proactive Threat Hunting &amp; Healing</div>
+      <div class="pillar-core">Automated Network Healing (ANH) Protocol</div>
+      <div>
+        <div class="tier-badge t1">Tier 1 — Autonomous</div>
+        <div style="font-size:10px;color:#8b9dbe;margin:4px 0 6px 2px;">Block · Quarantine · Reroute (no sign-off)</div>
+        <div class="tier-badge t2">Tier 2 — 90-sec window</div>
+        <div style="font-size:10px;color:#8b9dbe;margin:4px 0 6px 2px;">Segment · Honeypot · OT Isolate</div>
+        <div class="tier-badge t3">Tier 3 — Human Auth</div>
+        <div style="font-size:10px;color:#8b9dbe;margin:4px 0 0 2px;">Title 10/50 · ACD measures</div>
+      </div>
+    </div>
+
+    <div class="pillar pillar-A">
+      <div class="pillar-letter">A</div>
+      <div class="pillar-name">Pillar II</div>
+      <div class="pillar-title">Adaptive AI Analytics</div>
+      <div class="pillar-core">Secure AI Analytics Pipeline (SAAP)</div>
+      <div style="font-size:11px;color:#8b9dbe;line-height:1.6;">
+        ▸ Air-gapped classified enclave<br>
+        ▸ One-way data diode ingestion<br>
+        ▸ Cross-domain normalization<br>
+        ▸ ~60% false-positive reduction<br>
+        ▸ Adversary signature correlation<br>
+        ▸ Quarterly red-team validation
+      </div>
+    </div>
+
+    <div class="pillar pillar-C">
+      <div class="pillar-letter">C</div>
+      <div class="pillar-name">Pillar III</div>
+      <div class="pillar-title">Cyber-Physical CIKR Convergence</div>
+      <div class="pillar-core">CIKR-MRT-C Overlay + Mission Dependency Index</div>
+      <div style="font-size:11px;color:#c9a06a;margin-bottom:6px;">MDI = f(Resilience, Dependency, Intent)</div>
+      <div style="font-size:10px;color:#8b9dbe;line-height:1.6;">
+        MDI ≥ 0.80 → Pre-crisis DSCA + CISA MOU<br>
+        MDI ≥ 0.65 → Pre-crisis DSCA template<br>
+        MDI ≥ 0.45 → Info-sharing agreement<br>
+        MDI &lt; 0.45 → Monitoring only
+      </div>
+    </div>
+
+    <div class="pillar pillar-E">
+      <div class="pillar-letter">E</div>
+      <div class="pillar-name">Pillar IV</div>
+      <div class="pillar-title">Escalation-Aware Deterrence</div>
+      <div class="pillar-core">Escalation-Aware Deterrence Matrix (EADM)</div>
+      <div class="eadm-row">
+        <span class="eadm-badge eg">🟢 Green — Routine</span>
+        <span class="eadm-badge ea">🟡 Amber — Observable</span>
+        <span class="eadm-badge er">🔴 Red — Engagement</span>
+        <span class="eadm-badge eb">⬛ Black — Extreme</span>
+      </div>
+      <div style="font-size:10px;color:#8b9dbe;margin-top:8px;line-height:1.5;">
+        Calibrated disclosure → adversary signal-noise separation → prevent miscalculation escalation
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DATA FLOWS -->
+  <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.8px;margin:20px 0 10px;">Inter-Pillar Data Flows</div>
+  <div class="flows">
+    <div class="flow-card">
+      <div class="fh">P → A <span class="flow-arrow">→</span> Intelligence Feed</div>
+      <div class="fb">Honeypot telemetry and network anomaly data generated by ANH protocol feeds into SAAP for adversary signature correlation and attribution confidence scoring.</div>
+    </div>
+    <div class="flow-card">
+      <div class="fh">A → P <span class="flow-arrow">→</span> Prioritized Actions</div>
+      <div class="fb">SAAP threat assessment output triggers Tier 1 autonomous actions and surfaces Tier 2 recommendations to CPT commander with supporting attribution probability estimate.</div>
+    </div>
+    <div class="flow-card">
+      <div class="fh">C → P <span class="flow-arrow">→</span> Terrain Prioritization</div>
+      <div class="fb">CIKR-MRT-C overlay with MDI scores defines which assets receive highest ANH protection priority and pre-positions DSCA authorities for civilian node assistance.</div>
+    </div>
+    <div class="flow-card">
+      <div class="fh">A → E <span class="flow-arrow">→</span> EADM Assessment</div>
+      <div class="fb">SAAP attribution output informs EADM category assignment for each action — higher attribution confidence enables more precise deterrence communication to adversary.</div>
+    </div>
+    <div class="flow-card">
+      <div class="fh">P → E <span class="flow-arrow">→</span> Action Logging</div>
+      <div class="fb">Every ANH action triggers EADM classification. Amber+ actions auto-logged to NSC crisis repository with timestamp, trigger, authority, and operational justification.</div>
+    </div>
+    <div class="flow-card">
+      <div class="fh">E → All <span class="flow-arrow">→</span> Escalation Brake</div>
+      <div class="fb">EADM Black-category detection halts all automated processing and elevates to human deliberation. Prevents autonomous systems from crossing escalation thresholds without human judgment.</div>
+    </div>
+  </div>
+
+  <!-- CPT VIGNETTE -->
+  <div class="vignette">
+    <h3>Operational Vignette — CNMF CPT, Indo-Pacific Exercise</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num sp">P</div>
+        <div class="step-action">ANH detects lateral movement → Tier 1 quarantines node, Tier 2 deploys honeypot (90s window)</div>
+        <div class="step-result">Adversary absorbed into decoy; command system protected</div>
+      </div>
+      <div class="step">
+        <div class="step-num sa">A</div>
+        <div class="step-action">SAAP correlates honeypot TTPs with PRC campaign signatures; raises attribution to high-confidence</div>
+        <div class="step-result">CPT commander has actionable intelligence, not ambiguous noise</div>
+      </div>
+      <div class="step">
+        <div class="step-num sc">C</div>
+        <div class="step-action">MDI overlay flags power grid as 0.87 (critical); pre-negotiated DSCA template activates CISA channel</div>
+        <div class="step-result">Civilian-military coordination live before adversary pivots to grid</div>
+      </div>
+      <div class="step">
+        <div class="step-num se">E</div>
+        <div class="step-action">Honeypot action logged to NSC repository (amber); theater J2/J3 notified; EADM calibrated disclosure posture maintained</div>
+        <div class="step-result">Diplomatic record exists if adversary raises incident; escalation managed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGAL / POLICY BAR -->
+  <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;">Policy &amp; Legal Architecture</div>
+  <div class="legal-bar">
+    <div class="legal-card">
+      <h4>Required Doctrine Changes</h4>
+      <p>USCYBERCOM Operational Guidance 3-2 — add pre-authorized autonomous defensive action category. Parallels self-defense provisions already in force.</p>
+    </div>
+    <div class="legal-card warn">
+      <h4>Required Legislative Action</h4>
+      <p>Pre-Crisis Civilian-Military Cyber Defense Authority (PCCDA) — standing DoD/CISA joint planning authority. Requires Executive Order or NDAA action.</p>
+    </div>
+    <div class="legal-card crit">
+      <h4>CYBERCOM 2.0 Force Structure</h4>
+      <p>New Cyber-Physical Protection Element (CPPE) embedded in CPTs — distinct ICS/OT authorities, CIKR-MRT-C training, DSCA legal framework qualification.</p>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    PACE Framework v2.0 · Sunil Gentyala · sunil.gentyala@ieee.org · IEEE ·
+    Submitted to The Cyber Defense Review (ISSN 2474-2139) · April 2026 ·
+    All views are the author's own and do not represent official U.S. government policy.
+  </div>
+
+</div>
+</body>
+</html>

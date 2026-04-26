@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this framework, please cite it as below."
+type: article
+title: >-
+  Persistent Engagement at Machine Speed: The PACE Framework for
+  Proactive, AI-Driven Cyber-Physical Defense in Gray-Zone Conflict
+authors:
+  - family-names: Gentyala
+    given-names: Sunil
+    email: sunil.gentyala@ieee.org
+    affiliation: Institute of Electrical and Electronics Engineers (IEEE)
+journal: The Cyber Defense Review
+year: 2026
+status: submitted
+version: "2.0"
+url: https://cyberdefensereview.army.mil/
