@@ -9,8 +9,6 @@ authors:
     given-names: Sunil
     email: sunil.gentyala@ieee.org
     affiliation: Institute of Electrical and Electronics Engineers (IEEE)
-journal: The Cyber Defense Review
 year: 2026
-status: submitted
 version: "2.0"
-url: https://cyberdefensereview.army.mil/
+url: https://github.com/sunilgentyala/pace-framework

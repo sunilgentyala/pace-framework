@@ -2,8 +2,7 @@
 ### Proactive, AI-Driven, Cyber-Physical, Escalation-Aware Defense
 
 > **Author:** Sunil Gentyala · sunil.gentyala@ieee.org · IEEE Member  
-> **Status:** Research Preview — CDR Submission Draft v2.0  
-> **Journal:** [The Cyber Defense Review](https://cyberdefensereview.army.mil/)  
+> **Status:** Research Preview — v2.0  
 > **Citation Style:** Chicago Author-Date
 
 ---
@@ -125,14 +124,14 @@ This is a research framework in active development. Contributions, critiques, an
 ## Citation
 
 ```bibtex
-@article{gentyala2026pace,
-  author  = {Gentyala, Sunil},
-  title   = {Persistent Engagement at Machine Speed: The {PACE} Framework
-             for Proactive, {AI}-Driven Cyber-Physical Defense in Gray-Zone Conflict},
-  journal = {The Cyber Defense Review},
-  year    = {2026},
-  note    = {Submitted manuscript, v2.0},
-  email   = {sunil.gentyala@ieee.org}
+@misc{gentyala2026pace,
+  author = {Gentyala, Sunil},
+  title  = {Persistent Engagement at Machine Speed: The {PACE} Framework
+            for Proactive, {AI}-Driven Cyber-Physical Defense in Gray-Zone Conflict},
+  year   = {2026},
+  note   = {Preprint, v2.0},
+  email  = {sunil.gentyala@ieee.org},
+  url    = {https://github.com/sunilgentyala/pace-framework}
 }
 ```
 
@@ -142,4 +141,4 @@ This is a research framework in active development. Contributions, critiques, an
 
 MIT License — see [LICENSE](LICENSE) for details.
 
-> **Disclaimer:** The views expressed in this work are those of the author and do not reflect the official policy or position of the Institute of Electrical and Electronics Engineers, the U.S. Military Academy, the Department of War, the U.S. Government, or any subdivisions thereof.
+> **Disclaimer:** The views expressed in this work are those of the author and do not reflect the official policy or position of the Institute of Electrical and Electronics Engineers, the U.S. Government, or any subdivisions thereof.
